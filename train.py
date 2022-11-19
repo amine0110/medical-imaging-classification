@@ -10,14 +10,8 @@ from keras.callbacks import ModelCheckpoint
 from glob import glob
 import os
 from utils import config as cfg
+from utils.utils import return_classes
 
-
-def return_classes(classes_path):
-    with open(classes_path, 'r') as f:
-        classes = f.readlines()
-        classes = list(map(lambda x: x.strip(), classes))
-    
-    return classes
 
 def return_ds(input_dir):
     train_ds = tf.keras.preprocessing.image_dataset_from_directory(
@@ -71,19 +65,15 @@ def return_model(input_dim, nb_classes, freeze=False, head=None):
 
     return model
 
-def create_classes(path_datasets):
-    paths = glob(path_datasets + '/*')
-    file = open('utils/annotation.txt', 'w')
-    for path in paths:
-        file.write(os.path.basename(path) + '\n')
 
-create_classes(cfg.dataset_path)
-classes = return_classes(cfg.classes_path)
-train_ds, val_ds = return_ds(cfg.dataset_path)
-model = return_model(cfg.input_dim, len(classes), head='xception')
 
-model.compile(loss='categorical_crossentropy', optimizer=gradient_descent_v2.SGD(learning_rate=0.01), metrics=['accuracy'])
-save_weights = ModelCheckpoint(filepath='models/my_model.h5', monitor='val_accuracy', 
-                                verbose=1, save_best_only=True, save_weights_only=False, mode='max')
+if __name__ == '__main__':
+    classes = return_classes(cfg.classes_path)
+    train_ds, val_ds = return_ds(cfg.train_dataset_path)
+    model = return_model(cfg.input_dim, len(classes), head=cfg.head)
 
-model.fit(train_ds, epochs=cfg.epochs, validation_data=val_ds, callbacks=[save_weights])
+    model.compile(loss='categorical_crossentropy', optimizer=gradient_descent_v2.SGD(learning_rate=cfg.lr), metrics=['accuracy'])
+    save_weights = ModelCheckpoint(filepath='models/xception_retrained_model.h5', monitor='val_accuracy', 
+                                    verbose=1, save_best_only=True, save_weights_only=False, mode='max')
+
+    model.fit(train_ds, epochs=cfg.epochs, validation_data=val_ds, callbacks=[save_weights])
