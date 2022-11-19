@@ -4,10 +4,18 @@ from keras.preprocessing import image
 from utils import config as cfg
 import numpy as np
 from utils.utils import return_classes
+import tensorflow as tf
 
 
-path_to_model = 'models/my_model.h5'
-img_path = 'dataset/test/dyed-lifted-polyps/0a7bdce4-ac0d-44ef-93ee-92dfc8fe0b81.jpg'
+def return_test_ds(input_dir):
+    test_ds = tf.keras.preprocessing.image_dataset_from_directory(
+        input_dir,          
+        seed=42,                     
+        image_size=(cfg.input_dim, cfg.input_dim), 
+        batch_size=16, 
+    label_mode='categorical',
+    )
+    return test_ds
 
 def predict_one_image(img_path, model_path):
     classes = return_classes(cfg.classes_path)
@@ -22,5 +30,21 @@ def predict_one_image(img_path, model_path):
 
     return predicted_class, probability
 
-predic_class, predic_proba = predict_one_image(img_path, path_to_model)
-print(predic_class, predic_proba)
+def evaluate_model(model_path):
+    test_ds = return_test_ds(cfg.test_dataset_path)
+    model = load_model(model_path)
+    score = model.evaluate(test_ds, verbose=0)
+
+    return score[0], score[1]  # loss, accuracy
+
+
+if __name__ == '__main__':
+    path_to_model = 'models/my_model.h5'
+    img_path = 'dataset/test/dyed-lifted-polyps/0a7bdce4-ac0d-44ef-93ee-92dfc8fe0b81.jpg'
+
+    predic_class, predic_proba = predict_one_image(img_path, path_to_model)
+    print(predic_class, predic_proba)
+
+    loss, accuracy = evaluate_model(path_to_model)
+    print('loss: ', loss)
+    print('accuracy: ', accuracy)
