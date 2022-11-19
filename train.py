@@ -4,14 +4,14 @@ from keras.applications.vgg16 import VGG16
 from keras.applications.xception import Xception
 from keras.applications.densenet import DenseNet121
 from keras.applications.inception_v3 import InceptionV3
-
 from keras.layers import Dense, GlobalAveragePooling2D, Dropout, Flatten
-
 from keras.optimizers import gradient_descent_v2
 from keras.callbacks import ModelCheckpoint
+from glob import glob
+import os
 
-classes_path = 'The path to the txt file for the classes'
-dataset_path = 'The path to the train datasets'
+classes_path = ''
+dataset_path = './dataset'
 input_dim = 224
 epochs = 50
 
@@ -74,6 +74,13 @@ def return_model(input_dim, nb_classes, freeze=False, head=None):
 
     return model
 
+def create_classes(path_datasets):
+    paths = glob(path_datasets + '/*')
+    file = open('utils/annotation.txt', 'w')
+    for path in paths:
+        file.write(os.path.basename(path) + '\n')
+
+create_classes(dataset_path)
 classes = return_classes(classes_path)
 train_ds, val_ds = return_ds(dataset_path)
 model = return_model(input_dim, len(classes))
