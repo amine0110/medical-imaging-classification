@@ -9,11 +9,8 @@ from keras.optimizers import gradient_descent_v2
 from keras.callbacks import ModelCheckpoint
 from glob import glob
 import os
+from utils import config as cfg
 
-classes_path = ''
-dataset_path = './dataset'
-input_dim = 224
-epochs = 50
 
 def return_classes(classes_path):
     with open(classes_path, 'r') as f:
@@ -28,7 +25,7 @@ def return_ds(input_dir):
         validation_split=0.2,        
         subset="training",           
         seed=42,                     
-        image_size=(input_dim, input_dim), 
+        image_size=(cfg.input_dim, cfg.input_dim), 
         batch_size=16, 
     label_mode='categorical',
     )
@@ -38,7 +35,7 @@ def return_ds(input_dir):
         validation_split=0.2,        
         subset="validation",           
         seed=42,                     
-        image_size=(input_dim, input_dim), 
+        image_size=(cfg.input_dim, cfg.input_dim), 
         batch_size=8, 
     label_mode='categorical',
     )
@@ -80,13 +77,13 @@ def create_classes(path_datasets):
     for path in paths:
         file.write(os.path.basename(path) + '\n')
 
-create_classes(dataset_path)
-classes = return_classes(classes_path)
-train_ds, val_ds = return_ds(dataset_path)
-model = return_model(input_dim, len(classes))
+create_classes(cfg.dataset_path)
+classes = return_classes(cfg.classes_path)
+train_ds, val_ds = return_ds(cfg.dataset_path)
+model = return_model(cfg.input_dim, len(classes), head='xception')
 
 model.compile(loss='categorical_crossentropy', optimizer=gradient_descent_v2.SGD(learning_rate=0.01), metrics=['accuracy'])
 save_weights = ModelCheckpoint(filepath='models/my_model.h5', monitor='val_accuracy', 
                                 verbose=1, save_best_only=True, save_weights_only=False, mode='max')
 
-model.fit(train_ds, epochs=epochs, validation_data=val_ds, callbacks=[save_weights])
+model.fit(train_ds, epochs=cfg.epochs, validation_data=val_ds, callbacks=[save_weights])
