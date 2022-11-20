@@ -4,11 +4,9 @@ from keras.applications.vgg16 import VGG16
 from keras.applications.xception import Xception
 from keras.applications.densenet import DenseNet121
 from keras.applications.inception_v3 import InceptionV3
-from keras.layers import Dense, GlobalAveragePooling2D, Dropout, Flatten
+from keras.layers import Dense, GlobalAveragePooling2D
 from keras.optimizers import gradient_descent_v2
 from keras.callbacks import ModelCheckpoint
-from glob import glob
-import os
 from utils import config as cfg
 from utils.utils import return_classes
 
@@ -51,6 +49,8 @@ def return_model(input_dim, nb_classes, freeze=False, head=None):
     if not head:
         print('Please choose the pretrained model')
 
+    print('Chosen model is:', head)
+
     if freeze:
         for layer in base_model.layers:
             layer.trainable = False
@@ -70,10 +70,10 @@ def return_model(input_dim, nb_classes, freeze=False, head=None):
 if __name__ == '__main__':
     classes = return_classes(cfg.classes_path)
     train_ds, val_ds = return_ds(cfg.train_dataset_path)
-    model = return_model(cfg.input_dim, len(classes), head=cfg.head)
+    model = return_model(cfg.input_dim, len(classes), head=cfg.head, freeze=False)
 
     model.compile(loss='categorical_crossentropy', optimizer=gradient_descent_v2.SGD(learning_rate=cfg.lr), metrics=['accuracy'])
-    save_weights = ModelCheckpoint(filepath='models/xception_retrained_model.h5', monitor='val_accuracy', 
+    save_weights = ModelCheckpoint(filepath='models/xception_trained_x_model_20_epoch.h5', monitor='val_accuracy', 
                                     verbose=1, save_best_only=True, save_weights_only=False, mode='max')
 
     model.fit(train_ds, epochs=cfg.epochs, validation_data=val_ds, callbacks=[save_weights])
