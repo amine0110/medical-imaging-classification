@@ -10,6 +10,8 @@ def return_classes(classes_path):
 
 def create_classes(path_datasets):
     paths = glob(path_datasets + '/*')
-    file = open('annotation.txt', 'w')
+    file = open('utils/annotation.txt', 'w')
     for path in paths:
         file.write(os.path.basename(path) + '\n')
+    
+    file.close()
