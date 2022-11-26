@@ -15,3 +15,4 @@ def create_classes(path_datasets):
         file.write(os.path.basename(path) + '\n')
     
     file.close()
+

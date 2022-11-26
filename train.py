@@ -70,10 +70,10 @@ def return_model(input_dim, nb_classes, freeze=False, head=None):
 if __name__ == '__main__':
     classes = return_classes(cfg.classes_path)
     train_ds, val_ds = return_ds(cfg.train_dataset_path)
-    model = return_model(cfg.input_dim, len(classes), head=cfg.head, freeze=False)
+    model = return_model(cfg.input_dim, len(classes), head=cfg.head, freeze=True)
 
     model.compile(loss='categorical_crossentropy', optimizer=gradient_descent_v2.SGD(learning_rate=cfg.lr), metrics=['accuracy'])
-    save_weights = ModelCheckpoint(filepath='models/xception_trained_x_model_20_epoch.h5', monitor='val_accuracy', 
+    save_weights = ModelCheckpoint(filepath='models/xception_freeze_model_40_epoch.h5', monitor='val_accuracy', 
                                     verbose=1, save_best_only=True, save_weights_only=False, mode='max')
 
     model.fit(train_ds, epochs=cfg.epochs, validation_data=val_ds, callbacks=[save_weights])
