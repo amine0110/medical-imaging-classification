@@ -2,6 +2,9 @@
 dataset/
 models/
 
+# Files
+output_video_30spf_direct.mp4
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
