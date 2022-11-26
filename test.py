@@ -39,11 +39,11 @@ def evaluate_model(model_path):
 
 
 if __name__ == '__main__':
-    path_to_model = 'models/vgg16_retrained_model_20_epoch.h5'
+    path_to_model = 'C:/Users/amine/Documents/Amine_Files/Hands_on_AI/Défi_1/to_send/model_6.h5'
     img_path = 'dataset/test/dyed-lifted-polyps/0a7bdce4-ac0d-44ef-93ee-92dfc8fe0b81.jpg'
 
-    predic_class, predic_proba = predict_one_image(img_path, path_to_model)
-    print(predic_class, predic_proba)
+    # predic_class, predic_proba = predict_one_image(img_path, path_to_model)
+    # print(predic_class, predic_proba)
 
     loss, accuracy = evaluate_model(path_to_model)
     print('loss: ', loss)
