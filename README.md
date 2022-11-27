@@ -48,6 +48,14 @@ def return_model(input_dim, nb_classes, freeze=False, head=None):
 
 The pre-trained model's weights should not be frozen because doing so increases the model's capacity for learning.
 
+## Run the inference 
+I added a script [`video_classification.py`](https://github.com/amine0110/medical-imaging-classification/blob/main/video_classification.py) that helps you do the inference in a video using one of your models. And I added also a script [`predict_options.py`](https://github.com/amine0110/medical-imaging-classification/blob/main/predict_options.py) that contains multiple inference options such as:
+- Predict one image
+- Predict one array
+- Predict a folder
+- Predict a video
+- Predict from the webcam
+
 ## A Beginner Guide to Medical Imaging
 [Join the waitlist](https://astounding-teacher-3608.ck.page/6dff57e0b5
 ) for the FREE medical imaging ebook!
