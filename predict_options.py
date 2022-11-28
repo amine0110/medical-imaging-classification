@@ -6,7 +6,7 @@ import cv2
 from utils import config as cfg
 
 
-class predict:
+class Predictor:
     def __init__(self, input_dim, classes_path, model=None, test_ds = None):
         self.model = model
         self.input_dim = input_dim
@@ -119,14 +119,13 @@ class predict:
 if __name__ == '__main__':
 
     ## Paths 
-    model_path = "Le lien vers un des modèles"
-    img_path = "Le lien vers l'image pour l'inference"
-    dir_path = "Le lien vers un dossier"
-    video_path = "Le lien vers la vidéo"
+    img_path = "Path to the image for inference"
+    dir_path = "Path to the folder for evaluation"
+    video_path = "Path to the video for inference and saving"
 
     ## Define the model (instance)
-    instance = predict(cfg.input_dim, cfg.classes_path)
-    instance.return_model(model_path)
+    instance = Predictor(cfg.input_dim, cfg.classes_path)
+    instance.return_model(cfg.path_to_model)
 
     ## Prediction for one image
     # predictions = instance.predict_one_image(img_path)
