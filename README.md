@@ -62,8 +62,7 @@ I added a script [`video_classification.py`](https://github.com/amine0110/medica
 
 This ebook serves as a guide for those who are new to the profession of medical imaging. It provides definitions and resources like where to learn anatomy. Where can you find quality papers? Where can you find good, cost-free datasets? plus more.
 
-## 🆕 NEW (coming soon) 
+## 🆕 NEW 
+Learn how to effectively manage and process DICOM files in Python with our comprehensive course, designed to equip you with the skills and knowledge you need to succeed.
 
-Full course about medical imaging segmentation is coming soon, join the waitlist here:
-
-https://pycad.co/monai-and-pytoch-for-medical-imaging/
+https://www.learn.pycad.co/course/dicom-simplified
